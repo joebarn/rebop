@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Reflection;
 using Rebop.Vm.Registers;
 using Rebop.Vm.Memory;
 using Rebop.Vm.Operations;
@@ -9,23 +12,24 @@ namespace Rebop.Vm
     {
 
 
-        protected Acc _acc = new Acc();
-        protected Ir _ir = new Ir();
-        protected Iv _iv = new Iv();
-        protected Pc _pc = new Pc();
-        protected X _x = new X();
-        protected Sp _sp = new Sp();
+        internal Acc _acc = new Acc();
+        internal Ir _ir = new Ir();
+        internal Iv _iv = new Iv();
+        internal Pc _pc = new Pc();
+        internal X _x = new X();
+        internal Sp _sp = new Sp();
 
-        protected Status _status = new Status();
+        internal Status _status = new Status();
 
-        protected Temp _tempA = new Temp();
-        protected Temp _tempB = new Temp();
+        internal Temp _tempA = new Temp();
+        internal Temp _tempB = new Temp();
+        internal Temp _mar = new Temp();
 
-        protected Ram _ram = new Ram();
+        internal Ram _ram = new Ram();
 
         protected bool _halted;
 
-        Operation _operation;
+        protected Operation _operation;
 
         public IRegister<byte> Acc => _acc;
         public IRegister<byte> Ir => _ir;
@@ -35,15 +39,39 @@ namespace Rebop.Vm
         public IRegister<ushort> Sp => _sp;
         public IRegister<ushort> TempA => _tempA;
         public IRegister<ushort> TempB => _tempB;
+        public IRegister<ushort> Mar => _mar;
         public IStatus Status => _status;
         public IRam Ram => _ram;
 
-        
+        public Dictionary<byte, Operation> Opcodes { get; private set; } = new Dictionary<byte, Operation>();
+
 
         public Cpu()
         {
             Reset();
+            LoadOperations();
         }
+
+        private void LoadOperations()
+        {
+            //load opcodes
+
+            List<Type> operationTypes = Assembly.GetAssembly(typeof(Operation)).GetTypes().Where(type => type.IsSubclassOf(typeof(Operation))).ToList<Type>();
+
+            foreach (Type operationType in operationTypes)
+            {
+                OpcodeAttribute[] oas = (OpcodeAttribute[])Attribute.GetCustomAttributes(operationType, typeof(OpcodeAttribute));
+
+                foreach (OpcodeAttribute oa in oas)
+                {
+                    Operation operation = (Operation)Activator.CreateInstance(operationType, this, oa.AddressingMode);
+                    Opcodes.Add(oa.Opcode, operation);
+                }
+
+            }
+
+        }
+
 
         public void Reset()
         {
@@ -56,6 +84,7 @@ namespace Rebop.Vm
             _status.Value = 0;
             _tempA.Value = 0;
             _tempB.Value = 0;
+            _mar.Value = 0;
             _ram.Reset();
             _halted = false;
         }
@@ -85,6 +114,10 @@ namespace Rebop.Vm
         {
             if (!_halted)
             {
+                _tempA.Value = 0;
+                _tempB.Value = 0;
+                _mar.Value = 0;
+                Clean();
 
                 _ir.Value = _ram[_pc.Value];
 
@@ -96,7 +129,7 @@ namespace Rebop.Vm
         {
             if (!_halted)
             {
-                _operation = Operation.Opcodes[_ir.Value];
+                _operation = Opcodes[_ir.Value];
 
                 //TODO post decode event
             }
@@ -106,7 +139,7 @@ namespace Rebop.Vm
         {
             if (!_halted)
             {
-                _operation.Load(this);
+                _operation.Load();
 
                 //TODO post load event
             }
@@ -116,7 +149,7 @@ namespace Rebop.Vm
         {
             if (!_halted)
             {
-                _operation.Execute(this);
+                _operation.Execute();
                 _pc.Value=(ushort)(_pc.Value + _operation.Width);
 
                 //TODO post execute event

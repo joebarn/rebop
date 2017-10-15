@@ -8,10 +8,6 @@ namespace Rebop.Vm.Registers
 {
     class X:Register<ushort>
     {
-        public override string ToString()
-        {
-            return _value.ToString("X2");
-        }
 
     }
 }

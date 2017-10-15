@@ -3,34 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Rebop.Vm.Registers;
 
 namespace Rebop.Vm.Operations
 {
     [Opcode(0x90, AddressingModes.Immediate)]
     [Opcode(0x91, AddressingModes.Absolute)]
-    [Opcode(0x92, AddressingModes.Indexed)]
+    [Opcode(0x92, AddressingModes.AbsoluteIndexed)]
     [Opcode(0x93, AddressingModes.Indirect)]
     [Opcode(0x94, AddressingModes.IndirectPreIndexed)]
     [Opcode(0x95, AddressingModes.IndirectPostIndexed)]
     class LDA : Operation
     {
-        public LDA(AddressingModes addressingMode) : base(addressingMode) { }
+        public LDA(Cpu cpu, AddressingModes addressingMode) : base(cpu, addressingMode) { }
 
-        protected override void OnExecute(Cpu cpu, AddressingModes addressingMode)
+        protected override void OnExecute()
         {
-            switch (addressingMode)
+            switch (_addressingMode)
             {
 
                 case AddressingModes.Immediate:
-                    cpu.Acc.Value = cpu.Ram[(ushort)(cpu.Pc.Value + 1)];
+                    _cpu._acc.Value = Immediate8();
                     break;
 
                 case AddressingModes.Absolute:
+                case AddressingModes.AbsoluteIndexed:
+                case AddressingModes.Indirect:
+                case AddressingModes.IndirectPreIndexed:
+                case AddressingModes.IndirectPostIndexed:
+                    _cpu._acc.Value = Read8(Effective());
                     break;
 
                 default:
+                    NotImpl();
                     break;
             }
+
+            //flags
+            Negative();
+            Zero();
+
 
         }
     }

@@ -7,17 +7,31 @@ using System.Threading.Tasks;
 namespace Rebop.Vm.Operations
 {
     [Opcode(0x99, AddressingModes.Absolute)]
-    [Opcode(0x9A, AddressingModes.Indexed)]
+    [Opcode(0x9A, AddressingModes.AbsoluteIndexed)]
     [Opcode(0x9B, AddressingModes.Indirect)]
     [Opcode(0x9C, AddressingModes.IndirectPreIndexed)]
     [Opcode(0x9D, AddressingModes.IndirectPostIndexed)]
     class STA : Operation
     {
-        public STA(AddressingModes addressingMode):base(addressingMode){ }
+        public STA(Cpu cpu, AddressingModes addressingMode):base(cpu, addressingMode){ }
 
-        protected override void OnExecute(Cpu cpu, AddressingModes addressingMode)
+        protected override void OnExecute()
         {
-            throw new NotImplementedException();
+            switch (_addressingMode)
+            {
+
+                case AddressingModes.Absolute:
+                case AddressingModes.AbsoluteIndexed:
+                case AddressingModes.Indirect:
+                case AddressingModes.IndirectPreIndexed:
+                case AddressingModes.IndirectPostIndexed:
+                    _cpu._acc.Value = Read8(Effective());
+                    break;
+
+                default:
+                    NotImpl();
+                    break;
+            }
         }
     }
 }

@@ -9,9 +9,6 @@ namespace Rebop.Vm.Registers
     class Acc:Register<byte>
     {
 
-        public override string ToString()
-        {
-            return _value.ToString("X2");
-        }
+       
     }
 }

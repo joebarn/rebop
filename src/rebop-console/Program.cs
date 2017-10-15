@@ -13,10 +13,10 @@ namespace rebop_console
             IRam ram = cpu.Ram;
 
             ram[0x4000] = 0x90; //lda
-            ram[0x4001] = 0x02;
+            ram[0x4001] = 0xFF; 
 
             ram[0x4002] = 0x10; //add
-            ram[0x4003] = 0x02;
+            ram[0x4003] = 0x01;
 
             ram[0x4004] = 0x01; //halt
 
@@ -26,7 +26,8 @@ namespace rebop_console
                 driver.Clock();
             }
 
-            Console.WriteLine(driver.Cpu.Acc.Value);
+            Console.WriteLine(driver.Cpu.Acc);
+            Console.WriteLine(driver.Cpu.Status);
 
         }
     }

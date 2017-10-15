@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rebop.Vm.Registers
 {
-    class Register<T>:IRegister<T>
+    class Register<T>:IRegister<T> where T : struct, IFormattable
     {
         protected T _value;
         protected bool _dirty;
@@ -38,6 +38,25 @@ namespace Rebop.Vm.Registers
             _dirty = false;
         }
 
+        public override string ToString()
+        {
+            string format;
+
+            if (typeof(T)==typeof(byte))
+            {
+                format = "X2";
+            }
+            else if (typeof(T) == typeof(ushort))
+            {
+                format = "X4";
+            }
+            else
+            {
+                format = "";
+            }
+
+            return $"{GetType().Name} : {_value.ToString(format, System.Globalization.CultureInfo.CurrentCulture)}";
+        }
 
     }
 }

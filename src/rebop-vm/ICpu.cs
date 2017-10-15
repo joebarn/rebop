@@ -14,6 +14,7 @@ namespace Rebop.Vm
         IRegister<ushort> Sp { get; }
         IRegister<ushort> TempA { get; }
         IRegister<ushort> TempB { get; }
+        IRegister<ushort> Mar { get; }
         IStatus Status { get; }
         IRam Ram { get; }
     }

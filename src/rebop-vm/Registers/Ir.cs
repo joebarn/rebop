@@ -8,10 +8,5 @@ namespace Rebop.Vm.Registers
 {
     class Ir:Register<byte>
     {
-        public override string ToString()
-        {
-            return _value.ToString("X2");
-        }
-
     }
 }

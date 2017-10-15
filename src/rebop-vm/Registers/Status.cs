@@ -17,7 +17,7 @@ namespace Rebop.Vm.Registers
 
         public void Clear(Flags flag)
         {
-            _value = (byte)(_value | ~(byte)flag);
+            _value = (byte)(_value & ~(byte)flag);
         }
 
         public bool IntMask
@@ -62,7 +62,16 @@ namespace Rebop.Vm.Registers
 
         public override string ToString()
         {
-            return _value.ToString("X2");
+            //IONZC000
+            string str = "Status : ";
+            str += IntMask ? "I " : "i ";
+            str += Overflow ? "O " : "o ";
+            str += Negative ? "N " : "n ";
+            str += Zero ? "Z " : "z ";
+            str += Carry ? "C " : "c ";
+
+
+            return str;
         }
 
     }

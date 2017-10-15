@@ -9,11 +9,11 @@ namespace Rebop.Vm.Operations
     [Opcode(0x01, AddressingModes.Implied)]
     class HALT : Operation
     {
-        public HALT(AddressingModes addressingMode):base(addressingMode){ }
+        public HALT(Cpu cpu, AddressingModes addressingMode):base(cpu, addressingMode){ }
 
-        protected override void OnExecute(Cpu cpu, AddressingModes addressingMode)
+        protected override void OnExecute()
         {
-            cpu.Halt();
+            _cpu.Halt();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Rebop.Vm.Registers
 {
     public interface IRegister<T>
     {
-        T Value { get;  set;}
+        T Value { get; }
         bool Dirty { get; }
     }
 }

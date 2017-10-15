@@ -9,10 +9,11 @@ namespace Rebop.Vm.Operations
     [Opcode(0, AddressingModes.Implied)]
     class NOP : Operation
     {
-        public NOP(AddressingModes addressingMode):base(addressingMode){ }
+        public NOP(Cpu cpu, AddressingModes addressingMode):base(cpu, addressingMode){ }
 
-        protected override void OnExecute(Cpu cpu, AddressingModes addressingMode)
+        protected override void OnExecute()
         {
+            //do nothing
         }
     }
 }
