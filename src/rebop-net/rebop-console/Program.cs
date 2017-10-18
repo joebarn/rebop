@@ -13,12 +13,16 @@ namespace rebop_console
             IRam ram = cpu.Ram;
 
             ram[0x4000] = 0x90; //lda
-            ram[0x4001] = 0xFF; 
+            ram[0x4001] = 0x02; 
 
             ram[0x4002] = 0x10; //add
-            ram[0x4003] = 0x01;
+            ram[0x4003] = 0x02;
 
-            ram[0x4004] = 0x01; //halt
+            ram[0x4004] = 0x80; //inca
+            ram[0x4005] = 0x80; //inca
+            ram[0x4006] = 0x80; //inca
+
+            ram[0x4007] = 0x01; //halt
 
 
             while (!driver.Halted)
