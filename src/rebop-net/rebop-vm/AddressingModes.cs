@@ -8,11 +8,11 @@ namespace Rebop.Vm
         Implied = 0,                 //imp
         Immediate = 1,               //imm(2)   $ff
         BigImmediate = 2,            //imm(3)   $ffff
-        Absolute = 4,                //abs      [$ffff]
-        //BigAbsolute                //(not really a mode)
-        AbsoluteIndexed = 8,         //abs-x    [$ffff,X]
-        Indirect = 16,               //ind      [[$ffff]]
-        IndirectPreIndexed = 32,     //x-ind    [[$ffff,X]]
-        IndirectPostIndexed = 64     //ind-x    [[$ffff],X]
+        Absolute = 4,                //abs      [$ffff] -> byte
+        BigAbsolute = 8,              //abs      [$ffff] -> ushort
+        AbsoluteIndexed = 16,        //abs-x    [$ffff,X]
+        Indirect = 32,               //ind      [[$ffff]]
+        IndirectPreIndexed = 64,     //x-ind    [[$ffff,X]]
+        IndirectPostIndexed = 128    //ind-x    [[$ffff],X]
     }
 }

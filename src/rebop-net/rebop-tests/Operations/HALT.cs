@@ -8,18 +8,21 @@ using NUnit.Framework;
 namespace Rebop.Tests.Operations
 {
     [TestFixture]
-    class NOP:Operation
+    class HALT:Operation
     {
 
         [Test]
         public void NOP_Imp()
         {
             Ram[0x4000] = 0x00; //nop
+            Ram[0x4001] = 0x00; //nop
+            Ram[0x4002] = 0x01; //halt
 
             Driver.Clock();
+            Driver.Clock();
+            Driver.Clock();
 
-            Assert.AreEqual(Cpu.Pc.Value, 0x4001);
-            Assert.AreEqual(Cpu.Ir.Value, 0x00);
+            Assert.AreEqual(Driver.IsHalted, true);
 
 
         }

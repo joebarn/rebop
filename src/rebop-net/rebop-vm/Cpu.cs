@@ -136,7 +136,14 @@ namespace Rebop.Vm
         {
             if (!_halted)
             {
-                _operation = Opcodes[_ir.Value];
+                if (Opcodes.ContainsKey(_ir.Value))
+                {
+                    _operation = Opcodes[_ir.Value];
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Opcode {_ir.Value} isn't valid");
+                }
 
                 //TODO post decode event
             }

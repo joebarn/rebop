@@ -56,6 +56,7 @@
     <Compile Include="ICycle.cs" />
     <Compile Include="Memory\IRam.cs" />
     <Compile Include="Memory\IRegion.cs" />
+    <Compile Include="Operations\BLDX.cs" />
     <Compile Include="Operations\SUB.cs" />
     <Compile Include="Operations\HALT.cs" />
     <Compile Include="Operations\INCA.cs" />

@@ -39,10 +39,11 @@ namespace Rebop.Vm.Operations
             {
                 case AddressingModes.Implied:
                 case AddressingModes.Immediate:
+                case AddressingModes.BigImmediate:
                     break;
 
                 case AddressingModes.Absolute:
-                    //includes big absolute
+                case AddressingModes.BigAbsolute:
                     _cpu._tempA.Value = Immediate16();
                     break;
 
@@ -80,9 +81,10 @@ namespace Rebop.Vm.Operations
             {
                 //AddressingModes.Implied:
                 //AddressingModes.Immediate:
+                //AddressingModes.BigImmediate:
 
                 case AddressingModes.Absolute:
-                    //includes big absolute
+                case AddressingModes.BigAbsolute:
                     return _cpu._tempA.Value;
 
                 case AddressingModes.AbsoluteIndexed:

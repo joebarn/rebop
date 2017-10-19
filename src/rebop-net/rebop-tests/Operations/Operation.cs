@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Rebop.Vm;
 using Rebop.Vm.Memory;
+using NUnit.Framework;
 
 namespace Rebop.Tests.Operations
 {
@@ -14,5 +15,10 @@ namespace Rebop.Tests.Operations
         protected ICpu Cpu => Rebop.Driver.Cpu;
         protected IRam Ram => Rebop.Driver.Cpu.Ram;
 
+        [SetUp]
+        public void SetUp()
+        {
+            Driver.Reset();
+        }
     }
 }

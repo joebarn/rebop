@@ -25,7 +25,7 @@ namespace Rebop.Vm.Operations
                 case AddressingModes.Indirect:
                 case AddressingModes.IndirectPreIndexed:
                 case AddressingModes.IndirectPostIndexed:
-                    _cpu._acc.Value = Read8(Effective());
+                    throw new NotImplementedException();
                     break;
 
                 default:
