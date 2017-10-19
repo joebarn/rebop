@@ -1,27 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rebop-unity", "rebop-unity.csproj", "{F53AF10A-1F2E-4A70-A91D-C7E6C346B5A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rebop-vm", "..\rebop-net\rebop-vm\rebop-vm.csproj", "{A910F85E-BA07-4567-B472-BA88CFE9FD32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug (unity)|Any CPU = Debug (unity)|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F53AF10A-1F2E-4A70-A91D-C7E6C346B5A1}.Debug (unity)|Any CPU.ActiveCfg = Release|Any CPU
-		{F53AF10A-1F2E-4A70-A91D-C7E6C346B5A1}.Debug (unity)|Any CPU.Build.0 = Release|Any CPU
 		{F53AF10A-1F2E-4A70-A91D-C7E6C346B5A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F53AF10A-1F2E-4A70-A91D-C7E6C346B5A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F53AF10A-1F2E-4A70-A91D-C7E6C346B5A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F53AF10A-1F2E-4A70-A91D-C7E6C346B5A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A910F85E-BA07-4567-B472-BA88CFE9FD32}.Debug (unity)|Any CPU.ActiveCfg = Debug (unity)|Any CPU
-		{A910F85E-BA07-4567-B472-BA88CFE9FD32}.Debug (unity)|Any CPU.Build.0 = Debug (unity)|Any CPU
 		{A910F85E-BA07-4567-B472-BA88CFE9FD32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A910F85E-BA07-4567-B472-BA88CFE9FD32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A910F85E-BA07-4567-B472-BA88CFE9FD32}.Release|Any CPU.ActiveCfg = Release|Any CPU
