@@ -26,7 +26,7 @@ namespace rebop_console
             ram[0x8090] = 0x00;
 
 
-            while (!driver.Halted)
+            while (!driver.IsHalted)
             {
                 driver.Clock();
             }

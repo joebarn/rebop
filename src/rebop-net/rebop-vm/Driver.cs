@@ -10,14 +10,27 @@ namespace Rebop.Vm
     {
         private Cpu _cpu = new Cpu();
 
+        public ICpu Cpu => _cpu;
+
         //timer
-
-        public void Start() { }
-
         public uint Speed { get; set; } = 0;
+
+
+        public void Start()
+        {
+
+        }
+
+        public void Run()
+        {
+
+
+        }
 
         public void Clock()
         {
+
+
             //state = fetch, decode, load, execute
             _cpu.Fetch();
             _cpu.Decode();
@@ -30,9 +43,18 @@ namespace Rebop.Vm
 
         }
 
-        public void Stop() { }
+        public void Reset()
+        {
+            _cpu.Reset();
+        }
 
-        public bool Halted
+        public void Halt()
+        {
+
+
+        }
+
+        public bool IsHalted
         {
             get
             {
@@ -40,7 +62,18 @@ namespace Rebop.Vm
             }
         }
 
-        public ICpu Cpu => _cpu;
+
+        public void Shutdown()
+        {
+
+        }
+
+
+
+
+
+
+
 
     }
 }

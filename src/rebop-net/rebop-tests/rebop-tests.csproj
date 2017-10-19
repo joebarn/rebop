@@ -1,16 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A910F85E-BA07-4567-B472-BA88CFE9FD32}</ProjectGuid>
+    <ProjectGuid>{3072424A-F98E-4369-A63E-00D8332DB8FA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rebop.Vm</RootNamespace>
-    <AssemblyName>rebop-vm</AssemblyName>
+    <RootNamespace>Rebop.Tests</RootNamespace>
+    <AssemblyName>rebop-tests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,16 +32,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug %28unity%29|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\rebop-unity\Assets\rebob-vm\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -49,41 +47,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressingModes.cs" />
-    <Compile Include="Cpu.cs" />
-    <Compile Include="Driver.cs" />
-    <Compile Include="ICpu.cs" />
-    <Compile Include="ICycle.cs" />
-    <Compile Include="Memory\IRam.cs" />
-    <Compile Include="Memory\IRegion.cs" />
-    <Compile Include="Operations\SUB.cs" />
-    <Compile Include="Operations\HALT.cs" />
-    <Compile Include="Operations\INCA.cs" />
-    <Compile Include="Operations\ADD.cs" />
     <Compile Include="Operations\LDA.cs" />
+    <Compile Include="Rebop.cs" />
     <Compile Include="Operations\NOP.cs" />
-    <Compile Include="Operations\OpcodeAttribute.cs" />
     <Compile Include="Operations\Operation.cs" />
-    <Compile Include="Operations\OR.cs" />
-    <Compile Include="Operations\STA.cs" />
-    <Compile Include="Registers\Flags.cs" />
-    <Compile Include="Registers\Temp.cs" />
-    <Compile Include="Registers\X.cs" />
-    <Compile Include="Registers\Iv.cs" />
-    <Compile Include="Registers\Sp.cs" />
-    <Compile Include="Registers\Pc.cs" />
-    <Compile Include="Registers\Ir.cs" />
-    <Compile Include="Registers\Acc.cs" />
-    <Compile Include="Registers\IRegister.cs" />
-    <Compile Include="Registers\IStatus.cs" />
-    <Compile Include="Memory\Ram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Memory\Region.cs" />
-    <Compile Include="Registers\Register.cs" />
-    <Compile Include="Registers\Status.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\rebop-vm\rebop-vm.csproj">
+      <Project>{A910F85E-BA07-4567-B472-BA88CFE9FD32}</Project>
+      <Name>rebop-vm</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

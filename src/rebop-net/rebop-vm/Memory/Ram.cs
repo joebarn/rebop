@@ -8,7 +8,8 @@ namespace Rebop.Vm.Memory
 {
     class Ram : IRam
     {
-        protected byte[] _buffer;
+        protected const int SIZE= 0xFFFF + 1; //65,536
+        protected byte[] _buffer=new byte[SIZE]; 
         protected ushort? _lastRead;
         protected ushort? _lastWrite;
 
@@ -19,13 +20,21 @@ namespace Rebop.Vm.Memory
 
         public void Reset()
         {
-            _buffer = new byte[0xFFFF + 1];
+            Array.Clear(_buffer, 0, SIZE);
         }
 
         public void Clean()
         {
             _lastRead = null;
             _lastWrite = null;
+        }
+
+        public void Load(ushort address, byte[] buffer)
+        {
+            foreach (byte b in buffer)
+            {
+                this[address++]=b;
+            }
         }
 
         public byte this[ushort address]

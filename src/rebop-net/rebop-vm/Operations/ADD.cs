@@ -16,44 +16,39 @@ namespace Rebop.Vm.Operations
 
         protected override void OnExecute()
         {
-            int value=0;
+            byte a = _cpu.Acc.Value;
+            byte b;
+            int value;
 
             switch (_addressingMode)
             {
 
                 case AddressingModes.Immediate:
-                    value= _cpu.Acc.Value + Immediate8(); 
+                    b = Immediate8();
                     break;
 
                 case AddressingModes.Absolute:
                 case AddressingModes.AbsoluteIndexed:
-                    value =_cpu.Acc.Value + Read8(Effective());
+                    b = Read8(Effective());
                     break;
 
                 default:
-                    NotImpl();
-                    break;
+                    throw new NotImplementedException();
             }
+
+            //calculate
+            value = a + b;
 
             //set
             _cpu._acc.Value = (byte)value;
 
             //flags
+            Carry(value, false);
+            Overflow(a, b, (byte)value, false);
             Negative();
             Zero();
 
 
-            //TODO carry & overflow is confused here
-            Overflow(value);
-
-            if (_cpu._status.Overflow)
-            {
-                _cpu._status.Set(Flags.Carry);
-            }
-            else
-            {
-                _cpu._status.Clear(Flags.Carry);
-            }
         }
     }
 }

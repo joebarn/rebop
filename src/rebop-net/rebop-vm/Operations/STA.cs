@@ -29,8 +29,7 @@ namespace Rebop.Vm.Operations
                     break;
 
                 default:
-                    NotImpl();
-                    break;
+                    throw new NotImplementedException();
             }
         }
     }

@@ -112,6 +112,9 @@ namespace Rebop.Vm
 
         public void Fetch()
         {
+            //Pc is set to next instruction
+
+
             if (!_halted)
             {
                 _tempA.Value = 0;

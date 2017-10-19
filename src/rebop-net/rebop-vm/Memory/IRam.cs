@@ -9,6 +9,7 @@ namespace Rebop.Vm.Memory
     public interface IRam
     {
         void Reset();
+        void Load(ushort address, byte[] buffer);
         byte this[ushort address] { get; set; }
         ushort? LastRead { get; }
         ushort? LastWrite { get; }
