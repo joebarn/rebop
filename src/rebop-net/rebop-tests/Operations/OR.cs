@@ -14,8 +14,16 @@ namespace Rebop.Tests.Operations
         [Test]
         public void OR_Imm()
         {
+            Ram.Load(0x4000, new byte[] { 0x90, 0x0A, 0x38, 0x04 });
 
-            Assert.AreEqual(1, 0x88);
+            Driver.Clock();
+            Driver.Clock();
+
+            Assert.AreEqual(Cpu.Acc.Value, 0x0E);
+            Assert.AreEqual(Cpu.Status.Carry, false);
+            Assert.AreEqual(Cpu.Status.Overflow, false);
+            Assert.AreEqual(Cpu.Status.Zero, false);
+            Assert.AreEqual(Cpu.Status.Negative, false);
 
         }
 
@@ -23,41 +31,38 @@ namespace Rebop.Tests.Operations
         public void OR_Abs()
         {
 
-            Assert.AreEqual(1, 0x88);
+            Ram.Load(0x4000, new byte[] { 0x90, 0x0A, 0x39, 0x50, 0x00 });
+            Ram.Load(0x5000, new byte[] { 0x04 });
+
+            Driver.Clock();
+            Driver.Clock();
+
+            Assert.AreEqual(Cpu.Acc.Value, 0x0E);
+            Assert.AreEqual(Cpu.Status.Carry, false);
+            Assert.AreEqual(Cpu.Status.Overflow, false);
+            Assert.AreEqual(Cpu.Status.Zero, false);
+            Assert.AreEqual(Cpu.Status.Negative, false);
 
         }
 
-        [Test]
-        public void OR_AbsX()
-        {
+        //[Test]
+        //public void OR_AbsX()
+        //{
+            
+        //    Ram.Load(0x4000, new byte[] { 0x90, 0x0A, 0x3A, 0x00, 0x05, 0x12, 0x50, 0x00 });
+        //    Ram.Load(0x5000, new byte[] { 0x04 });
 
-            Assert.AreEqual(1, 0x88);
+        //    Driver.Clock();
+        //    Driver.Clock();
+        //    Driver.Clock();
 
-        }
+        //    Assert.AreEqual(Cpu.Acc.Value, 0x0E);
+        //    Assert.AreEqual(Cpu.Status.Carry, false);
+        //    Assert.AreEqual(Cpu.Status.Overflow, false);
+        //    Assert.AreEqual(Cpu.Status.Zero, false);
+        //    Assert.AreEqual(Cpu.Status.Negative, false);
 
-        [Test]
-        public void OR_Ind()
-        {
-
-            Assert.AreEqual(1, 0x88);
-
-        }
-
-        [Test]
-        public void OR_XInd()
-        {
-
-            Assert.AreEqual(1, 0x88);
-
-        }
-
-        [Test]
-        public void OR_IndX()
-        {
-
-            Assert.AreEqual(1, 0x88);
-
-        }
+        //}
 
     }
 }
