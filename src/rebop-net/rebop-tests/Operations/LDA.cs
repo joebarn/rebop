@@ -15,11 +15,17 @@ namespace Rebop.Tests.Operations
         public void LDA_Imm()
         {
 
-            Ram.Load(0x4000, new byte[] { 0x90, 0x88 });
+            Ram.Load(0x4000, new byte[] { 0x90, 0x88, 0x90, 0x00 });
 
             Driver.Clock();
-
             Assert.AreEqual(Cpu.Acc.Value, 0x88);
+            Assert.AreEqual(Cpu.Status.Negative, true);
+            Assert.AreEqual(Cpu.Status.Zero, false);
+
+            Driver.Clock();
+            Assert.AreEqual(Cpu.Acc.Value, 0x00);
+            Assert.AreEqual(Cpu.Status.Negative, false);
+            Assert.AreEqual(Cpu.Status.Zero, true);
 
         }
 

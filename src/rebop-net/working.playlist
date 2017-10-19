@@ -1,1 +1,1 @@
-<Playlist Version="1.0" />
+<Playlist Version="1.0"><Add Test="Rebop.Tests.Operations.STA.STA_XInd" /><Add Test="Rebop.Tests.Operations.STA.STA_IndX" /><Add Test="Rebop.Tests.Operations.STA.STA_Abs" /><Add Test="Rebop.Tests.Operations.STA.STA_Ind" /><Add Test="Rebop.Tests.Operations.STA.STA_Imm" /><Add Test="Rebop.Tests.Operations.STA.STA_AbsX" /></Playlist>

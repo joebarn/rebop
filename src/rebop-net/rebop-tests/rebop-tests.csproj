@@ -47,8 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Operations\SUB.cs" />
     <Compile Include="Operations\INCA.cs" />
     <Compile Include="Operations\BLDX.cs" />
+    <Compile Include="Operations\ADD.cs" />
     <Compile Include="Operations\OR.cs" />
     <Compile Include="Operations\STA.cs" />
     <Compile Include="Operations\LDA.cs" />
