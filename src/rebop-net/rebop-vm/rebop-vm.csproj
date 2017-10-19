@@ -32,7 +32,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug %28unity%29|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\rebop-unity\Assets\rebob-vm\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -63,6 +63,7 @@
     <Compile Include="Operations\NOP.cs" />
     <Compile Include="Operations\OpcodeAttribute.cs" />
     <Compile Include="Operations\Operation.cs" />
+    <Compile Include="Operations\OR.cs" />
     <Compile Include="Operations\STA.cs" />
     <Compile Include="Registers\Flags.cs" />
     <Compile Include="Registers\Temp.cs" />

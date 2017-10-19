@@ -41,6 +41,9 @@ namespace Rebop.Vm.Operations
             //flags
             Negative();
             Zero();
+
+
+            //TODO carry & overflow is confused here
             Overflow(value);
 
             if (_cpu._status.Overflow)

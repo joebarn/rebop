@@ -123,6 +123,10 @@ namespace Rebop.Vm
 
                 //TODO post fetch event
             }
+            else
+            {
+                //TODO throw exeception
+            }
         }
 
         public void Decode()
@@ -137,6 +141,7 @@ namespace Rebop.Vm
 
         public void Load()
         {
+
             if (!_halted)
             {
                 _operation.Load();

@@ -120,6 +120,7 @@ namespace Rebop.Vm.Operations
         protected ushort Immediate16()
         {
             //bigendian
+            //TODO refactor to account for hardware endianess
             byte msb= _cpu.Ram[(ushort)(_cpu.Pc.Value + 1)];
             byte lsb = _cpu.Ram[(ushort)(_cpu.Pc.Value + 2)];
             return (ushort)((msb << 8) | lsb);
