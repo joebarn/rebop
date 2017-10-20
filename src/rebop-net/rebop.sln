@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rebop-console", "rebop-cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rebop-tests", "rebop-tests\rebop-tests.csproj", "{3072424A-F98E-4369-A63E-00D8332DB8FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rasm", "rasm\rasm.csproj", "{9824EA8B-DCBA-473E-92E5-22A051B9F0BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rebop-translation", "rebop-translation\rebop-translation.csproj", "{D545DE4D-9DBB-4A3A-A6A2-D438028EDADA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{3072424A-F98E-4369-A63E-00D8332DB8FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3072424A-F98E-4369-A63E-00D8332DB8FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3072424A-F98E-4369-A63E-00D8332DB8FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9824EA8B-DCBA-473E-92E5-22A051B9F0BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9824EA8B-DCBA-473E-92E5-22A051B9F0BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9824EA8B-DCBA-473E-92E5-22A051B9F0BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9824EA8B-DCBA-473E-92E5-22A051B9F0BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D545DE4D-9DBB-4A3A-A6A2-D438028EDADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D545DE4D-9DBB-4A3A-A6A2-D438028EDADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D545DE4D-9DBB-4A3A-A6A2-D438028EDADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D545DE4D-9DBB-4A3A-A6A2-D438028EDADA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
