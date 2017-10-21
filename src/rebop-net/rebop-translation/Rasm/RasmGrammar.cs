@@ -192,47 +192,54 @@ namespace Rebop.Translation.Rasm
         {
             GrammarComments = @"This grammar is based on the BNF provided in Appendix E of 'The Official Beboputer Microprocessor Databook' Copyright © 1998, Maxfield & Montrose Interactive Inc.";
 
-            //labels    
-            RegexBasedTerminal label_terminal = new RegexBasedTerminal("label", "(_|[A-Z]|[a-z])([A-Z]|[a-z]|[0-9])*");
-            NonTerminal label = new NonTerminal("label", typeof(LabelNode));
-            label.Rule = label_terminal;
-
             //comments
             CommentTerminal eolComment = new CommentTerminal("eolComment", "//", "\n", "\r");
             NonGrammarTerminals.Add(eolComment);
             CommentTerminal multilineComment = new CommentTerminal("multilineComment", "/*", "*/");
             NonGrammarTerminals.Add(multilineComment);
 
-            //literals
-            RegexBasedTerminal decimal_terminal = new RegexBasedTerminal("decimal_terminal", "[0-9]*");
-            NonTerminal decimal_literal = new NonTerminal("decimal_literal", typeof(LiteralNode));
-            decimal_literal.Rule = decimal_terminal;
+            NumberLiteral number = new NumberLiteral("number", NumberOptions.IntOnly);
+            number.DefaultIntTypes = new TypeCode[] { TypeCode.Byte, TypeCode.UInt16 };
+            number.AddPrefix("%", NumberOptions.Binary);
+            number.AddPrefix("$", NumberOptions.Hex);
 
-            RegexBasedTerminal hex_terminal = new RegexBasedTerminal("hex_terminal", "\\$(([0-9]|[a-f]|[A-F]){4}|([0-9]|[a-f]|[A-F]){2})");
-            NonTerminal hex_literal = new NonTerminal("hex_literal", typeof(LiteralNode));
-            hex_literal.Rule = hex_terminal;
-
-            RegexBasedTerminal binary_terminal = new RegexBasedTerminal("binary_terminal", "%((0|1){16}|(0|1){8})");
-            NonTerminal binary_literal = new NonTerminal("binary_literal", typeof(LiteralNode));
-            binary_literal.Rule = binary_terminal;
+            IdentifierTerminal label = new IdentifierTerminal("label");
 
             NonTerminal integer_ref = new NonTerminal("integer_ref", typeof(IntegerRefNode));
-            integer_ref.Rule = decimal_literal | hex_literal | binary_literal | label;
+            integer_ref.Rule = number | label;
 
             //expressions (todo)
+
 
             //mnemonics
             NonTerminal mnemonic = new NonTerminal("mnemonic", typeof(MnemonicNode));
             mnemonic.Rule = ToTerm("ADD") | "BLDX" | "HALT" | "INCA" | "LDA" | "NOP" | "OR" | "STA" | "SUB";
 
+
+            //operands
+            NonTerminal imm_operand = new NonTerminal("imm_operand");
+            imm_operand.Rule = integer_ref;
+
             NonTerminal abs_operand = new NonTerminal("abs_operand");
             abs_operand.Rule = "[" + integer_ref + "]";
 
+            NonTerminal absx_operand = new NonTerminal("absx_operand");
+            absx_operand.Rule = "[" + integer_ref + "," + "X" + "]";
+
+            NonTerminal ind_operand = new NonTerminal("ind_operand");
+            ind_operand.Rule = "[" + "[" + integer_ref + "]" + "]";
+
+            NonTerminal xind_operand = new NonTerminal("xind_operand");
+            xind_operand.Rule = "[" + "[" + integer_ref + "," + "X" + "]" + "]";
+
+            NonTerminal indx_operand = new NonTerminal("indx_operand");
+            indx_operand.Rule = "[" + "[" + integer_ref + "]" + "," + "X" + "]";
+
             NonTerminal operand = new NonTerminal("operand", typeof(MnemonicNode));
-            operand.Rule = abs_operand;
+            operand.Rule = imm_operand | abs_operand | absx_operand | ind_operand | xind_operand | indx_operand;
 
             NonTerminal instruction = new NonTerminal("instruction", typeof(InstructionNode));
-            instruction.Rule = (mnemonic + operand | mnemonic + integer_ref | mnemonic) + ";";
+            instruction.Rule = NewLineStar + ((mnemonic + operand) | mnemonic) + (NewLinePlus | Eof);
 
 
             //file structure
