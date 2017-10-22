@@ -62,7 +62,9 @@ namespace Irony.GrammarExplorer {
             KeyPreview = true;
             tabGrammar.SelectedIndex = 3;
             tabOutput.SelectedIndex = 0;
-      _loaded = true;
+            LoadSelectedGrammar();
+
+            _loaded = true;
     }
 
     private void fmExploreGrammar_FormClosing(object sender, FormClosingEventArgs e) {
@@ -339,7 +341,10 @@ namespace Irony.GrammarExplorer {
 
     #region Parsing and running
     private void CreateGrammar() {
-      _grammar = _grammarLoader.CreateGrammar();
+
+            //JOE
+            _grammar = new Rebop.Translation.Rasm.RasmGrammar();
+          //_grammar = _grammarLoader.CreateGrammar();
     }
 
     private void CreateParser() {
@@ -379,6 +384,13 @@ namespace Irony.GrammarExplorer {
       }
 
             //JOE
+
+            var root = _parseTree.Root.AstNode;
+
+            Rebop.Translation.ROF rof =Rebop.Translation.Rasm.Assembler.Assemble((Rebop.Translation.Rasm.Ast.FileAstNode)root);
+
+            txtRasm.Text = $"{rof.Start} {rof.End}";
+
             txtSource.Focus();
 
      }

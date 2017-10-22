@@ -22,6 +22,14 @@ namespace Rebop.Translation.Ast
             return $"{_bnfTerm.ToString()}";
         }
 
+        public SourceSpan SourceSpan
+        {
+            get
+            {
+                return _sourceSpan;
+            }
+        }
+
         public int Position
         {
             get
@@ -35,5 +43,43 @@ namespace Rebop.Translation.Ast
             return _childNodes;
         }
 
+        public List<AstNodeBase> ChildNodes
+        {
+            get
+            {
+                return _childNodes;
+            }
+        }
+
+        public List<AstNodeBase> Find(Type type)
+        {
+            List<AstNodeBase> found = new List<Ast.AstNodeBase>();
+
+            foreach (var childNode in _childNodes)
+            {
+                if (childNode.GetType() == type)
+                {
+                    found.Add(childNode);
+                }
+            }
+
+            return found;
+        }
+
+        public AstNodeBase this[Type type]
+        {
+            get
+            {
+                foreach (var childNode in _childNodes)
+                {
+                    if (type.IsAssignableFrom(childNode.GetType()))
+                    {
+                        return childNode;
+                    }
+                }
+
+                return null;
+            }
+        }
     }
 }

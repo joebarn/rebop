@@ -54,6 +54,7 @@
     <Compile Include="Driver.cs" />
     <Compile Include="ICpu.cs" />
     <Compile Include="ICycle.cs" />
+    <Compile Include="Instruction.cs" />
     <Compile Include="Memory\IRam.cs" />
     <Compile Include="Memory\IRegion.cs" />
     <Compile Include="Operations\BLDX.cs" />

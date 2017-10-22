@@ -3,7 +3,7 @@ using Rebop.Vm.Registers;
 
 namespace Rebop.Vm.Operations
 {
-    abstract class Operation
+    internal abstract class Operation
     {
         protected AddressingModes _addressingMode;
         protected Cpu _cpu;
@@ -14,26 +14,30 @@ namespace Rebop.Vm.Operations
             _addressingMode = addressingMode;
         }
 
+        public static ushort GetWidth(AddressingModes addressingMode)
+        {
+            switch (addressingMode)
+            {
+                case AddressingModes.Implied:
+                    return 1;
+
+                case AddressingModes.Immediate:
+                    return 2;
+
+                default:
+                    return 3;
+            }
+        }
+
         public ushort Width
         {
             get
             {
-                switch (_addressingMode)
-                {
-                    case AddressingModes.Implied:
-                        return 1;
-
-                    case AddressingModes.Immediate:
-                        return 2;
-
-                    default:
-                        return 3;
-                }
-
+                return GetWidth(_addressingMode);
             }
         }
 
-        public void Load()
+        internal void Load()
         {
             switch (_addressingMode)
             {
@@ -106,7 +110,7 @@ namespace Rebop.Vm.Operations
         }
 
 
-        public void Execute()
+        internal void Execute()
         {
             OnExecute();
         }

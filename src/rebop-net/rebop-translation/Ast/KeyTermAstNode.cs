@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Irony.Parsing;
+using Irony.Ast;
+using System.Collections;
 
 namespace Rebop.Translation.Ast
 {

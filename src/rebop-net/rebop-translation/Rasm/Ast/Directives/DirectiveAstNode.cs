@@ -7,7 +7,7 @@ using Rebop.Translation.Ast;
 
 namespace Rebop.Translation.Rasm.Ast.Directives
 {
-    public class DirectiveAstNode : AstNode
+    public class DirectiveAstNode : AstNode, IStatement
     {
 
     }

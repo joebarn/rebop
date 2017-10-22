@@ -49,9 +49,11 @@
     <Compile Include="Ast\KeyTermAstNode.cs" />
     <Compile Include="Playground.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rasm\AssembleException.cs" />
     <Compile Include="Rasm\Assembler.cs" />
     <Compile Include="Rasm\Ast\Directives\DeclarationAstNode.cs" />
     <Compile Include="Rasm\Ast\Directives\EndAstNode.cs" />
+    <Compile Include="Rasm\Ast\Directives\IDirective.cs" />
     <Compile Include="Rasm\Ast\Directives\OriginAstNode.cs" />
     <Compile Include="Rasm\Ast\Directives\ReservationInitAstNode.cs" />
     <Compile Include="Rasm\Ast\Directives\ReservationStarAstNode.cs" />
@@ -68,12 +70,19 @@
     <Compile Include="Rasm\Ast\IntegerAstNode.cs" />
     <Compile Include="Rasm\Ast\LabelAstNode.cs" />
     <Compile Include="Rasm\Ast\Instructions\MnemonicAstNode.cs" />
+    <Compile Include="Rasm\Ast\Statement.cs" />
     <Compile Include="Rasm\RasmGrammar.cs" />
+    <Compile Include="ROF.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="irony.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\rebop-vm\rebop-vm.csproj">
+      <Project>{a910f85e-ba07-4567-b472-ba88cfe9fd32}</Project>
+      <Name>rebop-vm</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

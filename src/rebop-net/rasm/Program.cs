@@ -14,7 +14,7 @@ namespace rasm
             var root=Assembler.Parse("[foo].[ha] = 1 AND [foo].[ha] = 1");
             Console.WriteLine($"valid = {root!=null}");
 
-            Assembler.Walk(root);
+            //Assembler.Assemble(root);
         }
 
 

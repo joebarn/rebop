@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rebop.Translation.Rasm.Ast.Directives
 {
-    public class ReservationStarAstNode : ReservationAstNodeBase
+    public class ReservationStarAstNode : ReservationAstNodeBase, IDirective
     {
 
     }

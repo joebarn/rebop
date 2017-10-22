@@ -102,7 +102,7 @@ namespace Rebop.Translation.Rasm
             end.Rule = ".end";
 
             NonTerminal declaration = new NonTerminal("declaration", typeof(DeclarationAstNode));
-            declaration.Rule = ".equ" + integer;
+            declaration.Rule =".equ" + integer;
 
             NonTerminal reservation_star = new NonTerminal("reservation_star",typeof(ReservationStarAstNode));
             reservation_star.Rule = ((ToTerm(".byte") | ".2byte" | ".4byte")) + "*"+integer;

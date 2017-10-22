@@ -5,9 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Rebop.Translation.Ast;
 
-namespace Rebop.Translation.Rasm.Ast.Instructions
+namespace Rebop.Translation.Rasm.Ast.Directives
 {
-    public class InstructionAstNode : AstNode, IStatement
+    public interface IDirective
     {
+        AstNodeBase this[Type type] { get; }
     }
 }
