@@ -58,6 +58,10 @@ namespace Irony.GrammarExplorer {
         chkAutoRefresh.Checked = Settings.Default.AutoRefresh;
         cboGrammars.SelectedIndex = Settings.Default.LanguageIndex; //this will build parser and start colorizer
       } catch { }
+            //JOE
+            KeyPreview = true;
+            tabGrammar.SelectedIndex = 3;
+            tabOutput.SelectedIndex = 0;
       _loaded = true;
     }
 
@@ -149,11 +153,23 @@ namespace Irony.GrammarExplorer {
       tvParseTree.Nodes.Clear();
       if (_parseTree == null) return;
       AddParseNodeRec(null, _parseTree.Root);
+
+            //JOE
+            tvParseTree.ExpandAll();
+
     }
     private void AddParseNodeRec(TreeNode parent, ParseTreeNode node) {
       if (node == null) return;
-      string txt = node.ToString();
-      TreeNode tvNode = (parent == null? tvParseTree.Nodes.Add(txt) : parent.Nodes.Add(txt) );
+            //string txt = node.ToString();
+            string txt = $"{node.Term.Name} [{node.Term.GetType().Name}] \"{node.ToString()}\"" ;
+
+            //JOE
+            //if (node.Term is KeyTerm)
+            //{
+            //    txt += $" [{((KeyTerm)node.Term).Name}]";
+            //}
+
+            TreeNode tvNode = (parent == null? tvParseTree.Nodes.Add(txt) : parent.Nodes.Add(txt) );
       tvNode.Tag = node;
       foreach(var child in node.ChildNodes)
         AddParseNodeRec(tvNode, child);
@@ -163,9 +179,14 @@ namespace Irony.GrammarExplorer {
       tvAst.Nodes.Clear();
       if (_parseTree == null || _parseTree.Root == null || _parseTree.Root.AstNode == null) return;
       AddAstNodeRec(null, _parseTree.Root.AstNode);
+
+            //JOE
+            tvAst.ExpandAll();
+
+
     }
 
-    private void AddAstNodeRec(TreeNode parent, object astNode) {
+        private void AddAstNodeRec(TreeNode parent, object astNode) {
       if (astNode == null) return;
       string txt = astNode.ToString();
       TreeNode newNode = (parent == null ?
@@ -356,9 +377,13 @@ namespace Irony.GrammarExplorer {
         ShowParseTree();
         ShowAstTree();
       }
-    }
 
-    private void RunSample() {
+            //JOE
+            txtSource.Focus();
+
+     }
+
+        private void RunSample() {
       ClearRuntimeInfo();
       Stopwatch sw = new Stopwatch();
       int oldGcCount;
@@ -558,10 +583,13 @@ namespace Irony.GrammarExplorer {
         Invoke(new EventHandler(GrammarAssemblyUpdated), sender, args);
         return;
       }
-      if (chkAutoRefresh.Checked) {
-        LoadSelectedGrammar();
-        txtGrammarComments.Text += String.Format("{0}Grammar assembly reloaded: {1:HH:mm:ss}", Environment.NewLine, DateTime.Now);
-      }
+            if (chkAutoRefresh.Checked)
+            {
+                //JOE
+                LoadSelectedGrammar();
+                txtGrammarComments.Text += String.Format("{0}Grammar assembly reloaded: {1:HH:mm:ss}", Environment.NewLine, DateTime.Now);
+                btnParse.PerformClick();
+            }
     }
 
     private void btnRefresh_Click(object sender, EventArgs e) {
@@ -688,7 +716,17 @@ namespace Irony.GrammarExplorer {
       EnableHighlighter(!chkDisableHili.Checked);
     }
 
-    #endregion
 
-  }//class
+
+        #endregion
+        //JOE
+        private void fmGrammarExplorer_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode.ToString() == "F6")
+            {
+                //System.Media.SystemSounds.Beep.Play();
+                btnParse.PerformClick();
+            }
+        }
+    }//class
 }
