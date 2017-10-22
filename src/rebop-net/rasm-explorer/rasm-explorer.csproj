@@ -7,7 +7,7 @@
     <ProjectGuid>{0D6B8F27-766E-4F87-B452-FD8D16643133}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>rasm_explorer</RootNamespace>
+    <RootNamespace>Irony.GrammarExplorer</RootNamespace>
     <AssemblyName>rasm-explorer</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -33,6 +33,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastColoredTextBox">
+      <HintPath>..\libs\FastColoredTextBox\FastColoredTextBox.dll</HintPath>
+    </Reference>
+    <Reference Include="Irony">
+      <HintPath>..\libs\Irony\Irony.dll</HintPath>
+    </Reference>
+    <Reference Include="Irony.Interpreter">
+      <HintPath>..\libs\Irony\Irony.Interpreter.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,8 +55,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="fmGrammarExplorer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmGrammarExplorer.Designer.cs">
+      <DependentUpon>fmGrammarExplorer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmSelectGrammars.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmSelectGrammars.Designer.cs">
+      <DependentUpon>fmSelectGrammars.cs</DependentUpon>
+    </Compile>
+    <Compile Include="fmShowException.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="fmShowException.Designer.cs">
+      <DependentUpon>fmShowException.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GrammarItemList.cs" />
+    <Compile Include="GrammarLoader.cs" />
+    <Compile Include="Highlighter\EditorAdapter.cs" />
+    <Compile Include="Highlighter\EditorViewAdapter.cs" />
+    <Compile Include="Highlighter\FastColoredTextBoxHighlighter.cs" />
+    <Compile Include="Highlighter\RichTextBoxHighlighter.cs" />
+    <Compile Include="Highlighter\WavyLineStyle.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="fmGrammarExplorer.resx">
+      <DependentUpon>fmGrammarExplorer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmSelectGrammars.resx">
+      <DependentUpon>fmSelectGrammars.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="fmShowException.resx">
+      <DependentUpon>fmShowException.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -56,6 +99,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -69,6 +113,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Highlighter\AboutCodeHighlighter.txt" />
+    <Content Include="License.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

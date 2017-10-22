@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Irony">
-      <HintPath>..\rebop-irony\lib\Irony.dll</HintPath>
+      <HintPath>..\libs\Irony\Irony.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

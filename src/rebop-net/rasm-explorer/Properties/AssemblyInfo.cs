@@ -1,16 +1,28 @@
-﻿using System.Reflection;
+﻿#region License
+/* **********************************************************************************
+ * Copyright (c) Roman Ivantsov
+ * This source code is subject to terms and conditions of the MIT License
+ * for Irony. A copy of the license can be found in the License.txt file
+ * at the root of this distribution. 
+ * By using this source code in any fashion, you are agreeing to be bound by the terms of the 
+ * MIT License.
+ * You must not remove this notice from this software.
+ * **********************************************************************************/
+#endregion
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("rasm-explorer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Irony.GrammarExplorer")]
+[assembly: AssemblyDescription("Grammar Explorer for Irony")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("rasm-explorer")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("GrammarExplorer")]
+[assembly: AssemblyCopyright("Copyright © 2010 Roman Ivantsov")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +32,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("0d6b8f27-766e-4f87-b452-fd8d16643133")]
+[assembly: Guid("09b192b9-9b3a-470b-a753-9f9c32bd81bc")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -29,8 +41,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-// You can specify all the values or you can default the Build and Revision Numbers 
-// by using the '*' as shown below:
-// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
