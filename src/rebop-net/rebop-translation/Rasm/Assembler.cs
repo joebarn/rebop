@@ -11,7 +11,7 @@ namespace Rebop.Translation.Rasm
     {
         public static ParseTreeNode Parse(string rasm)
         {
-            Grammar grammar = new Rebop.Translation.QueryGrammar();
+            Grammar grammar = new Rebop.Translation.Rasm.RasmGrammar();
 
             LanguageData language = new LanguageData(grammar);
 

@@ -43,10 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ast\AstNode.cs" />
+    <Compile Include="Ast\AstNodeBase.cs" />
+    <Compile Include="Ast\DefaultAstNode.cs" />
+    <Compile Include="Ast\KeyTermAstNode.cs" />
     <Compile Include="Playground.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rasm\Assembler.cs" />
+    <Compile Include="Rasm\RasmAst.cs" />
     <Compile Include="Rasm\RasmGrammar.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="irony.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
