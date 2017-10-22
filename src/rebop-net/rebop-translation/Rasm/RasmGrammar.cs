@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Irony.Ast;
 using Irony.Parsing;
 using Rebop.Translation.Ast;
+using Rebop.Translation.Rasm.Ast;
+using Rebop.Translation.Rasm.Ast.Instructions;
+using Rebop.Translation.Rasm.Ast.Directives;
 
 namespace Rebop.Translation.Rasm
 {

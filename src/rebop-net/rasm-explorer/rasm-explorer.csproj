@@ -118,6 +118,12 @@
     <Content Include="Highlighter\AboutCodeHighlighter.txt" />
     <Content Include="License.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\rebop-translation\rebop-translation.csproj">
+      <Project>{d545de4d-9dbb-4a3a-a6a2-d438028edada}</Project>
+      <Name>rebop-translation</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -50,12 +50,30 @@
     <Compile Include="Playground.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rasm\Assembler.cs" />
-    <Compile Include="Rasm\RasmAst.cs" />
+    <Compile Include="Rasm\Ast\Directives\DeclarationAstNode.cs" />
+    <Compile Include="Rasm\Ast\Directives\EndAstNode.cs" />
+    <Compile Include="Rasm\Ast\Directives\OriginAstNode.cs" />
+    <Compile Include="Rasm\Ast\Directives\ReservationInitAstNode.cs" />
+    <Compile Include="Rasm\Ast\Directives\ReservationStarAstNode.cs" />
+    <Compile Include="Rasm\Ast\Directives\ReservationAstNodeBase.cs" />
+    <Compile Include="Rasm\Ast\Directives\DirectiveAstNode.cs" />
+    <Compile Include="Rasm\Ast\FileAstNode.cs" />
+    <Compile Include="Rasm\Ast\Instructions\IndXOperandAstNode.cs" />
+    <Compile Include="Rasm\Ast\Instructions\XIndOperandAstNode.cs" />
+    <Compile Include="Rasm\Ast\Instructions\IndOperandAstNode.cs" />
+    <Compile Include="Rasm\Ast\Instructions\AbsXOperandAstNode.cs" />
+    <Compile Include="Rasm\Ast\Instructions\AbsOperandAstNode.cs" />
+    <Compile Include="Rasm\Ast\Instructions\ImmOperandAstNode.cs" />
+    <Compile Include="Rasm\Ast\Instructions\InstructionAstNode.cs" />
+    <Compile Include="Rasm\Ast\IntegerAstNode.cs" />
+    <Compile Include="Rasm\Ast\LabelAstNode.cs" />
+    <Compile Include="Rasm\Ast\Instructions\MnemonicAstNode.cs" />
     <Compile Include="Rasm\RasmGrammar.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="irony.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
