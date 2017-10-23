@@ -10,6 +10,7 @@ using Rebop.Translation.Ast;
 using Rebop.Translation.Rasm.Ast;
 using Rebop.Translation.Rasm.Ast.Instructions;
 using Rebop.Translation.Rasm.Ast.Directives;
+using Rebop.Vm;
 
 namespace Rebop.Translation.Rasm
 {
@@ -66,7 +67,26 @@ namespace Rebop.Translation.Rasm
 
             //mnemonics
             NonTerminal mnemonic = new NonTerminal("mnemonic",typeof(MnemonicAstNode));
-            mnemonic.Rule = ToTerm("ADD") | "BLDX" | "HALT" | "INCA" | "LDA" | "NOP" | "OR" | "STA" | "SUB";
+
+            List<string> instructions = new List<string>();
+
+            foreach (var i in Instruction.GetInstructions())
+            {
+                if (!instructions.Contains(i.Mnemonic))
+                {
+                    instructions.Add(i.Mnemonic);
+
+                    if (mnemonic.Rule==null)
+                    {
+                        mnemonic.Rule = ToTerm(i.Mnemonic);
+                    }
+                    else
+                    {
+                        mnemonic.Rule |= ToTerm(i.Mnemonic);
+                    }
+                }
+            }
+
 
 
             //operands

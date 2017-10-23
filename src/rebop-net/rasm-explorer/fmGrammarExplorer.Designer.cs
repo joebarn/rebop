@@ -56,6 +56,7 @@ namespace Irony.GrammarExplorer {
             this.pageAst = new System.Windows.Forms.TabPage();
             this.tvAst = new System.Windows.Forms.TreeView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.txtRasm = new System.Windows.Forms.TextBox();
             this.chkParserTrace = new System.Windows.Forms.CheckBox();
             this.pnlLang = new System.Windows.Forms.Panel();
             this.btnRefresh = new System.Windows.Forms.Button();
@@ -132,7 +133,6 @@ namespace Irony.GrammarExplorer {
             this.label5 = new System.Windows.Forms.Label();
             this.lblRunTime = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.txtRasm = new System.Windows.Forms.TextBox();
             this.tabGrammar.SuspendLayout();
             this.pageTerminals.SuspendLayout();
             this.pageNonTerms.SuspendLayout();
@@ -421,8 +421,19 @@ namespace Irony.GrammarExplorer {
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Size = new System.Drawing.Size(342, 323);
             this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "pageRasm";
+            this.tabPage1.Text = "RASM";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // txtRasm
+            // 
+            this.txtRasm.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtRasm.Location = new System.Drawing.Point(0, 0);
+            this.txtRasm.Multiline = true;
+            this.txtRasm.Name = "txtRasm";
+            this.txtRasm.ReadOnly = true;
+            this.txtRasm.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtRasm.Size = new System.Drawing.Size(342, 323);
+            this.txtRasm.TabIndex = 0;
             // 
             // chkParserTrace
             // 
@@ -1251,16 +1262,6 @@ namespace Irony.GrammarExplorer {
             this.lblRunTime.Size = new System.Drawing.Size(13, 13);
             this.lblRunTime.TabIndex = 18;
             this.lblRunTime.Text = "0";
-            // 
-            // txtRasm
-            // 
-            this.txtRasm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtRasm.Location = new System.Drawing.Point(0, 0);
-            this.txtRasm.Multiline = true;
-            this.txtRasm.Name = "txtRasm";
-            this.txtRasm.ReadOnly = true;
-            this.txtRasm.Size = new System.Drawing.Size(342, 323);
-            this.txtRasm.TabIndex = 0;
             // 
             // fmGrammarExplorer
             // 
