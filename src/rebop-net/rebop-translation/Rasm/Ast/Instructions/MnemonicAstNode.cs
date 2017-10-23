@@ -21,5 +21,13 @@ namespace Rebop.Translation.Rasm.Ast.Instructions
         {
             return $"{base.ToString()} \"{_value}\"";
         }
+
+        public string Value
+        {
+            get
+            {
+                return _value.ToString();
+            }
+        }
     }
 }

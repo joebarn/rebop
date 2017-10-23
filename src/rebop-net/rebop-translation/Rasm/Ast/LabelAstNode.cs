@@ -8,7 +8,7 @@ using Irony.Parsing;
 
 namespace Rebop.Translation.Rasm.Ast
 {
-    public class LabelAstNode : AstNode
+    public class LabelAstNode : AstNode, IIntegerRef
     {
         protected object _value;
 

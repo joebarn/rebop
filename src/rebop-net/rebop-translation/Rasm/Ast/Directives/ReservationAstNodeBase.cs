@@ -21,5 +21,25 @@ namespace Rebop.Translation.Rasm.Ast.Directives
         {
             return $"{base.ToString()} \"{_value}\"";
         }
+
+        public int Value
+        {
+            get
+            {
+                switch (_value.ToString())
+                {
+                    case ".byte":
+                        return 1;
+                    case ".2byte":
+                        return 2;
+                    case ".4byte":
+                        return 4;
+                    default:
+                        throw new Exception("bad reservation");
+
+                }
+
+            }
+        }
     }
 }

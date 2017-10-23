@@ -8,6 +8,7 @@ using Rebop.Translation.Rasm.Ast;
 using Rebop.Translation.Rasm.Ast.Directives;
 using Rebop.Translation.Rasm.Ast.Instructions;
 using Rebop.Translation.Ast;
+using Rebop.Vm;
 
 namespace Rebop.Translation.Rasm
 {
@@ -39,13 +40,23 @@ namespace Rebop.Translation.Rasm
                 EQUs must be before ORG
                 EQUs must have labels
                 file must end with END
-                
+                reserve statements must come between ORG and END (ORG doesn't mean the start of code, only the image)   
+
                 address labels are ushort
                 constant labels (EQU) may be bytes or ushorts
 
 
             */
-            List<byte> image = new List<byte>();
+
+            //cache instructions
+            Dictionary<string, Instruction> instructions = new Dictionary<string, Instruction>();
+
+            foreach (var instruction in Instruction.GetInstructions())
+            {
+                instructions.Add(instruction.Encode(), instruction);
+            }
+
+            byte[] image = new byte[0xFFFF + 1];
             Dictionary<string, object> labels = new Dictionary<string, object>();
             ushort? start = null;
             ushort? end = null;
@@ -87,7 +98,6 @@ namespace Rebop.Translation.Rasm
                         if (directive is OriginAstNode)
                         {
                             start = GetIntegerRef16(statement, (OriginAstNode) directive, labels);
-                            here = start.Value;
                         }
                         else
                         {
@@ -98,11 +108,71 @@ namespace Rebop.Translation.Rasm
 
                             if (directive is ReservationAstNodeBase)
                             {
-                                //TODO
+                                if (label != null)
+                                {
+                                    labels.Add(label.Value, here);
+                                }
+
+                                int byteSize = ((ReservationAstNodeBase)directive).Value;
+
+                                if (directive is ReservationInitAstNode)
+                                {
+                                    var integers=((AstNodeBase)directive).Find(typeof(IntegerAstNode));
+
+                                    if (integers.Length==0)
+                                    {
+                                        here += (ushort)byteSize;
+                                    }
+                                    else
+                                    {
+                                        foreach(var integer in integers)
+                                        {
+                                            var i = (IntegerAstNode)integer;
+
+                                            if (byteSize == 1)
+                                            {
+                                                if (i.Value is ushort)
+                                                {
+                                                    throw new AssembleException("can't use 16 bit constants in .byte reservation", statement.SourceSpan);
+                                                }
+
+                                                image[here] = (byte)i.Value;
+                                            }
+                                            else if (byteSize==2)
+                                            {
+                                                Endian16 endian16 = Endian16.FromNative(Convert.ToUInt16(i.Value));
+
+                                                image[here] = endian16.Msb;
+                                                image[here+1] = endian16.Lsb;
+                                            }
+                                            else
+                                            {
+                                                throw new NotImplementedException("no support for .4byte");
+                                            }
+
+                                            here += (ushort)byteSize;
+
+                                        }
+                                    }
+
+
+                                }
+                                else if (directive is ReservationStarAstNode)
+                                {
+                                    int bytes = GetIntegerRef16(statement, (AstNode)directive, labels);
+                                    //TODO what if this overflows?
+                                    here += (ushort)(bytes * byteSize);
+                                }
+                                else
+                                {
+                                    //TODO .4byte
+                                    throw new InvalidOperationException();
+                                }
+
                             }
                             else if (directive is EndAstNode)
                             {
-                                end = here;
+                                end = (ushort?)(start+here-1);
                             }
 
                         }
@@ -113,6 +183,31 @@ namespace Rebop.Translation.Rasm
                 }
                 else if (statement is InstructionAstNode)
                 {
+                    if (label != null)
+                    {
+                        labels.Add(label.Value, here);
+                    }
+
+                    MnemonicAstNode mnemonic = statement[typeof(MnemonicAstNode)] as MnemonicAstNode;
+                    IOperand operand= statement[typeof(IOperand)] as IOperand;
+                    string encodedInstruction = EncodeInstruction(mnemonic.Value, operand);
+                    Instruction instruction = instructions[encodedInstruction];
+
+                    image[here] = instruction.OpCode;
+
+                    if (instruction.Width==2)
+                    {
+                        image[here + 1] = GetIntegerRef8(statement, (AstNodeBase)operand, labels);
+                    }
+                    else if (instruction.Width==3)
+                    {
+                        ushort value = GetIntegerRef16(statement, (AstNodeBase)operand, labels);
+                        Endian16 endian16 = Endian16.FromNative(value);
+                        image[here + 1] = endian16.Msb;
+                        image[here + 2] = endian16.Lsb;
+                    }
+
+                    here += instruction.Width;
 
                 }
                 else
@@ -130,16 +225,16 @@ namespace Rebop.Translation.Rasm
             return new ROF { Start = start.Value, End = end.Value, Image = image.ToArray() };
         }
 
-        private static ushort GetIntegerRef16(AstNodeBase statement, AstNodeBase integerRefNode, Dictionary<string, object> labels)
+        private static ushort GetIntegerRef16(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, object> labels)
         {
-            object value = GetIntegerRef(statement, integerRefNode, labels);
+            object value = GetIntegerRef(statement, astNode, labels);
 
             return Convert.ToUInt16(value);
         }
 
-        private static byte GetIntegerRef8(AstNodeBase statement, AstNodeBase integerRefNode, Dictionary<string, object> labels)
+        private static byte GetIntegerRef8(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, object> labels)
         {
-            object value = GetIntegerRef(statement, integerRefNode, labels);
+            object value = GetIntegerRef(statement, astNode, labels);
 
             if (value is byte)
             {
@@ -151,23 +246,22 @@ namespace Rebop.Translation.Rasm
             }
         }
 
-        private static object GetIntegerRef(AstNodeBase statement, AstNodeBase integerRefNode, Dictionary<string, object> labels)
+        private static object GetIntegerRef(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, object> labels)
         {
 
-            IntegerAstNode integer = integerRefNode[typeof(IntegerAstNode)] as IntegerAstNode;
+            IIntegerRef integerRef = astNode[typeof(IIntegerRef)] as IIntegerRef;
 
-            if (integer != null)
+            if (integerRef is IntegerAstNode)
             {
-                return integer.Value;
+                return ((IntegerAstNode)integerRef).Value;
             }
-            else
+            else if (integerRef is LabelAstNode)
             {
-                LabelAstNode l = integerRefNode[typeof(LabelAstNode)] as LabelAstNode;
+                LabelAstNode label = integerRef as LabelAstNode;
 
-
-                if (l!=null && labels.ContainsKey(l.Value))
+                if (label != null && labels.ContainsKey(label.Value))
                 {
-                    return labels[l.Value];
+                    return labels[label.Value];
                 }
                 else
                 {
@@ -175,7 +269,64 @@ namespace Rebop.Translation.Rasm
                 }
 
             }
+            else
+            {
+                throw new AssembleException("bad integer ref", statement.SourceSpan);
+            }
         }
+
+        private static string EncodeInstruction(string mnemonic, IOperand operand)
+        {
+            AddressingModes addressingMode;
+
+            if (operand is ImmOperandAstNode)
+            {
+                if (mnemonic.ToUpper().StartsWith("B"))
+                {
+                    addressingMode = AddressingModes.BigImmediate;
+                }
+                else
+                {
+                    addressingMode = AddressingModes.Immediate;
+                }
+
+            }
+            else if (operand is AbsOperandAstNode)
+            {
+                if (mnemonic.ToUpper().StartsWith("B"))
+                {
+                    addressingMode = AddressingModes.BigAbsolute;
+                }
+                else
+                {
+                    addressingMode = AddressingModes.Absolute;
+                }
+            }
+            else if (operand is AbsXOperandAstNode)
+            {
+                addressingMode = AddressingModes.AbsoluteIndexed;
+            }
+            else if (operand is IndOperandAstNode)
+            {
+                addressingMode = AddressingModes.Indirect;
+            }
+            else if (operand is XIndOperandAstNode)
+            {
+                addressingMode = AddressingModes.IndirectPreIndexed;
+            }
+            else if (operand is IndXOperandAstNode)
+            {
+                addressingMode = AddressingModes.IndirectPostIndexed;
+            }
+            else
+            {
+                addressingMode = AddressingModes.Implied;
+            }
+
+            return Instruction.Encode(mnemonic, addressingMode);
+        }
+
+        
 
     }
 }

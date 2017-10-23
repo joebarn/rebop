@@ -51,7 +51,7 @@ namespace Rebop.Translation.Ast
             }
         }
 
-        public List<AstNodeBase> Find(Type type)
+        public AstNodeBase[] Find(Type type)
         {
             List<AstNodeBase> found = new List<Ast.AstNodeBase>();
 
@@ -63,7 +63,7 @@ namespace Rebop.Translation.Ast
                 }
             }
 
-            return found;
+            return found.ToArray();
         }
 
         public AstNodeBase this[Type type]

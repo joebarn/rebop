@@ -61,8 +61,8 @@ namespace Rebop.Translation.Rasm
             NonTerminal integer_ref = new NonTerminal("integer_ref");
             integer_ref.Rule = integer | label;
 
-            //expressions (todo)
-
+            //expressions 
+            //TODO
 
             //mnemonics
             NonTerminal mnemonic = new NonTerminal("mnemonic",typeof(MnemonicAstNode));
@@ -105,7 +105,7 @@ namespace Rebop.Translation.Rasm
             declaration.Rule =".equ" + integer;
 
             NonTerminal reservation_star = new NonTerminal("reservation_star",typeof(ReservationStarAstNode));
-            reservation_star.Rule = ((ToTerm(".byte") | ".2byte" | ".4byte")) + "*"+integer;
+            reservation_star.Rule = ((ToTerm(".byte") | ".2byte")) + "*"+ integer_ref; //TODO support for ".4byte"
 
             NonTerminal byte_list_star = new NonTerminal("byte_list_star");
             MakeStarRule(byte_list_star, "," + integer);

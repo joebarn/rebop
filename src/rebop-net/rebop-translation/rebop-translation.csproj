@@ -60,6 +60,8 @@
     <Compile Include="Rasm\Ast\Directives\ReservationAstNodeBase.cs" />
     <Compile Include="Rasm\Ast\Directives\DirectiveAstNode.cs" />
     <Compile Include="Rasm\Ast\FileAstNode.cs" />
+    <Compile Include="Rasm\Ast\IIntegerRef.cs" />
+    <Compile Include="Rasm\Ast\Instructions\IOperand.cs" />
     <Compile Include="Rasm\Ast\Instructions\IndXOperandAstNode.cs" />
     <Compile Include="Rasm\Ast\Instructions\XIndOperandAstNode.cs" />
     <Compile Include="Rasm\Ast\Instructions\IndOperandAstNode.cs" />

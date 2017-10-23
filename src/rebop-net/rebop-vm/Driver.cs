@@ -72,25 +72,7 @@ namespace Rebop.Vm
 
 
 
-        public static Instruction[] GetInstructions()
-        {
-            List<Instruction> instructions = new List<Instruction>();
-
-            List<Type> operationTypes = Assembly.GetAssembly(typeof(Operation)).GetTypes().Where(type => type.IsSubclassOf(typeof(Operation))).ToList<Type>();
-
-            foreach (Type operationType in operationTypes)
-            {
-                OpcodeAttribute[] oas = (OpcodeAttribute[])Attribute.GetCustomAttributes(operationType, typeof(OpcodeAttribute));
-
-                foreach (OpcodeAttribute oa in oas)
-                {
-                    instructions.Add(new Instruction {OpCode=oa.Opcode, Mnemonic=operationType.Name, AddressingMode=oa.AddressingMode, Width=Operation.GetWidth(oa.AddressingMode) });
-                }
-
-            }
-
-            return instructions.ToArray();
-        }
+       
 
 
 

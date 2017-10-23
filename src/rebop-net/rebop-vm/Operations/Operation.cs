@@ -143,16 +143,15 @@ namespace Rebop.Vm.Operations
             //convert big endian ushort in ram to native ushort
             byte msb = _cpu.Ram[address];
             byte lsb = _cpu.Ram[(ushort)(address + 1)];
-            return (ushort)((msb << 8) | lsb);
+            return Endian16.ToNative(msb, lsb);
         }
 
         protected void Write16(ushort address, ushort value)
         {
-            //convert natice ushort to big endian format in ram
-            byte msb = (byte)(value >> 8);
-            byte lsb = (byte)(0x00ff & value);
-            _cpu.Ram[address] = msb;
-            _cpu.Ram[(ushort)(address + 1)] = lsb;
+            //convert native ushort to big endian format in ram
+            Endian16 endian16 = Endian16.FromNative(value);
+            _cpu.Ram[address] = endian16.Msb;
+            _cpu.Ram[(ushort)(address + 1)] = endian16.Lsb;
         }
 
         protected bool Signed8(byte value)

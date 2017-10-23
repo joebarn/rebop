@@ -7,7 +7,7 @@ using Rebop.Translation.Ast;
 
 namespace Rebop.Translation.Rasm.Ast.Instructions
 {
-    public class ImmOperandAstNode : AstNode
+    public class ImmOperandAstNode : AstNode, IOperand
     {
 
     }
