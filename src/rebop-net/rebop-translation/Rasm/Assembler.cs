@@ -57,8 +57,11 @@ namespace Rebop.Translation.Rasm
             }
 
             byte[] image = new byte[0xFFFF + 1];
-            Dictionary<string, object> labels = new Dictionary<string, object>();
+
+            Dictionary<string, Label> labels = new Dictionary<string, Label>();
+
             ushort? start = null;
+            ushort? code = null;
             ushort? end = null;
             ushort here = 0;
 
@@ -90,14 +93,14 @@ namespace Rebop.Translation.Rasm
 
                         IntegerAstNode integer = directive[typeof(IntegerAstNode)] as IntegerAstNode;
 
-                        labels.Add(label.Value, integer.Value);
+                        labels.Add(label.Value, new Label(LabelType.Constant, integer.Value));
                     }
                     else
                     {
 
                         if (directive is OriginAstNode)
                         {
-                            start = GetIntegerRef16(statement, (OriginAstNode) directive, labels);
+                            start = GetIntegerRef16(statement, (OriginAstNode)directive, labels);
                         }
                         else
                         {
@@ -110,22 +113,22 @@ namespace Rebop.Translation.Rasm
                             {
                                 if (label != null)
                                 {
-                                    labels.Add(label.Value, here);
+                                    labels.Add(label.Value, new Label(LabelType.Address, here + start.Value));
                                 }
 
                                 int byteSize = ((ReservationAstNodeBase)directive).Value;
 
                                 if (directive is ReservationInitAstNode)
                                 {
-                                    var integers=((AstNodeBase)directive).Find(typeof(IntegerAstNode));
+                                    var integers = ((AstNodeBase)directive).Find(typeof(IntegerAstNode));
 
-                                    if (integers.Length==0)
+                                    if (integers.Length == 0)
                                     {
                                         here += (ushort)byteSize;
                                     }
                                     else
                                     {
-                                        foreach(var integer in integers)
+                                        foreach (var integer in integers)
                                         {
                                             var i = (IntegerAstNode)integer;
 
@@ -138,12 +141,12 @@ namespace Rebop.Translation.Rasm
 
                                                 image[here] = (byte)i.Value;
                                             }
-                                            else if (byteSize==2)
+                                            else if (byteSize == 2)
                                             {
                                                 Endian16 endian16 = Endian16.FromNative(Convert.ToUInt16(i.Value));
 
                                                 image[here] = endian16.Msb;
-                                                image[here+1] = endian16.Lsb;
+                                                image[here + 1] = endian16.Lsb;
                                             }
                                             else
                                             {
@@ -172,7 +175,7 @@ namespace Rebop.Translation.Rasm
                             }
                             else if (directive is EndAstNode)
                             {
-                                end = (ushort?)(start+here-1);
+                                end = (ushort?)(start + here - 1);
                             }
 
                         }
@@ -185,7 +188,12 @@ namespace Rebop.Translation.Rasm
                 {
                     if (label != null)
                     {
-                        labels.Add(label.Value, here);
+                        labels.Add(label.Value, new Label(LabelType.Address, here + start));
+                    }
+
+                    if (code==null)
+                    {
+                        code = (ushort)(here+start);
                     }
 
                     MnemonicAstNode mnemonic = statement[typeof(MnemonicAstNode)] as MnemonicAstNode;
@@ -222,17 +230,17 @@ namespace Rebop.Translation.Rasm
                 throw new InvalidOperationException("file must have END");
             }
 
-            return new ROF { Start = start.Value, End = end.Value, Image = image.ToArray() };
+            return new ROF { Start = start.Value, Code=code, End = end.Value, Image = image.ToArray() };
         }
 
-        private static ushort GetIntegerRef16(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, object> labels)
+        private static ushort GetIntegerRef16(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, Label> labels)
         {
             object value = GetIntegerRef(statement, astNode, labels);
 
             return Convert.ToUInt16(value);
         }
 
-        private static byte GetIntegerRef8(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, object> labels)
+        private static byte GetIntegerRef8(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, Label> labels)
         {
             object value = GetIntegerRef(statement, astNode, labels);
 
@@ -246,7 +254,7 @@ namespace Rebop.Translation.Rasm
             }
         }
 
-        private static object GetIntegerRef(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, object> labels)
+        private static object GetIntegerRef(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, Label> labels)
         {
 
             IIntegerRef integerRef = astNode[typeof(IIntegerRef)] as IIntegerRef;
@@ -261,7 +269,7 @@ namespace Rebop.Translation.Rasm
 
                 if (label != null && labels.ContainsKey(label.Value))
                 {
-                    return labels[label.Value];
+                    return labels[label.Value].Integer;
                 }
                 else
                 {

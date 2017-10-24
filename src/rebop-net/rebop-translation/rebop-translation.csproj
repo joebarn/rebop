@@ -73,6 +73,8 @@
     <Compile Include="Rasm\Ast\LabelAstNode.cs" />
     <Compile Include="Rasm\Ast\Instructions\MnemonicAstNode.cs" />
     <Compile Include="Rasm\Ast\Statement.cs" />
+    <Compile Include="Rasm\Label.cs" />
+    <Compile Include="Rasm\LabelType.cs" />
     <Compile Include="Rasm\RasmGrammar.cs" />
     <Compile Include="ROF.cs" />
   </ItemGroup>
