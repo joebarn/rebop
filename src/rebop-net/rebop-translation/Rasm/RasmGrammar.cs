@@ -43,13 +43,15 @@ namespace Rebop.Translation.Rasm
             GrammarComments = @"This grammar is based on the BNF provided in Appendix E of 'The Official Beboputer Microprocessor Databook' Copyright © 1998, Maxfield & Montrose Interactive Inc.";
 
             //comments
+            CommentTerminal eolPoundComment = new CommentTerminal("eolComment", "#", "\n", "\r");
+            NonGrammarTerminals.Add(eolPoundComment);
             CommentTerminal eolComment = new CommentTerminal("eolComment", "//", "\n", "\r");
             NonGrammarTerminals.Add(eolComment);
             CommentTerminal multilineComment = new CommentTerminal("multilineComment", "/*", "*/");
             NonGrammarTerminals.Add(multilineComment);
 
             NumberLiteral integer = new NumberLiteral("integer", NumberOptions.IntOnly, typeof(IntegerAstNode));
-            integer.DefaultIntTypes = new TypeCode[] { TypeCode.Byte, TypeCode.UInt16 };
+            integer.DefaultIntTypes = new TypeCode[] { TypeCode.Byte, TypeCode.UInt16, TypeCode.UInt32 };
             integer.AddPrefix("%", NumberOptions.Binary);
             integer.AddPrefix("$", NumberOptions.Hex);
 
@@ -125,7 +127,7 @@ namespace Rebop.Translation.Rasm
             declaration.Rule =".equ" + integer;
 
             NonTerminal reservation_star = new NonTerminal("reservation_star",typeof(ReservationStarAstNode));
-            reservation_star.Rule = ((ToTerm(".byte") | ".2byte")) + "*"+ integer_ref; //TODO support for ".4byte"
+            reservation_star.Rule = ((ToTerm(".byte") | ".2byte" | ".4byte")) + "*"+ integer_ref; 
 
             NonTerminal byte_list_star = new NonTerminal("byte_list_star");
             MakeStarRule(byte_list_star, "," + integer);

@@ -143,14 +143,28 @@ namespace Rebop.Translation.Rasm
                                             }
                                             else if (byteSize == 2)
                                             {
-                                                Endian16 endian16 = Endian16.FromNative(Convert.ToUInt16(i.Value));
+                                                if (i.Value is uint)
+                                                {
+                                                    throw new AssembleException("can't use 32 bit constants in .2byte reservation", statement.SourceSpan);
+                                                }
 
-                                                image[here] = endian16.Msb;
-                                                image[here + 1] = endian16.Lsb;
+                                                var bytes = EndianUtils.FromNative(Convert.ToUInt16(i.Value));
+
+                                                image[here] = bytes[0]; //msb;
+                                                image[here + 1] = bytes[1]; //lsb;
+                                            }
+                                            else if (byteSize == 4)
+                                            {
+                                                var bytes = EndianUtils.FromNative(Convert.ToUInt32(i.Value));
+
+                                                image[here] = bytes[0]; //msb;
+                                                image[here + 1] = bytes[1]; 
+                                                image[here + 2] = bytes[2]; 
+                                                image[here + 3] = bytes[3]; //lsb;
                                             }
                                             else
                                             {
-                                                throw new NotImplementedException("no support for .4byte");
+                                                throw new NotImplementedException("bad byte size");
                                             }
 
                                             here += (ushort)byteSize;
@@ -162,14 +176,13 @@ namespace Rebop.Translation.Rasm
                                 }
                                 else if (directive is ReservationStarAstNode)
                                 {
-                                    int bytes = GetIntegerRef16(statement, (AstNode)directive, labels);
+                                    uint bytes = GetIntegerRef32(statement, (AstNode)directive, labels);
                                     //TODO what if this overflows?
                                     here += (ushort)(bytes * byteSize);
                                 }
                                 else
                                 {
-                                    //TODO .4byte
-                                    throw new InvalidOperationException();
+                                    throw new InvalidOperationException("bad reservation directive");
                                 }
 
                             }
@@ -210,9 +223,9 @@ namespace Rebop.Translation.Rasm
                     else if (instruction.Width==3)
                     {
                         ushort value = GetIntegerRef16(statement, (AstNodeBase)operand, labels);
-                        Endian16 endian16 = Endian16.FromNative(value);
-                        image[here + 1] = endian16.Msb;
-                        image[here + 2] = endian16.Lsb;
+                        var bytes = EndianUtils.FromNative(value);
+                        image[here + 1] = bytes[0]; //msb;
+                        image[here + 2] = bytes[1]; //lsb;
                     }
 
                     here += instruction.Width;
@@ -233,11 +246,26 @@ namespace Rebop.Translation.Rasm
             return new ROF { Start = start.Value, Code=code, End = end.Value, Image = image.ToArray() };
         }
 
+        private static uint GetIntegerRef32(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, Label> labels)
+        {
+            object value = GetIntegerRef(statement, astNode, labels);
+            return Convert.ToUInt32(value);
+        }
+
         private static ushort GetIntegerRef16(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, Label> labels)
         {
             object value = GetIntegerRef(statement, astNode, labels);
 
-            return Convert.ToUInt16(value);
+            if ((value is byte) || (value is ushort))
+            {
+                return Convert.ToUInt16(value);
+            }
+            else
+            {
+                throw new AssembleException("integer reference must be 16 bits", statement.SourceSpan);
+            }
+
+
         }
 
         private static byte GetIntegerRef8(AstNodeBase statement, AstNodeBase astNode, Dictionary<string, Label> labels)
